@@ -73,6 +73,15 @@ def zookeeperjobstore():
     store.remove_all_jobs()
     store.shutdown()
 
+@pytest.yield_fixture
+def elasticsearchjobstore():
+    elasticsearch = pytest.importorskip('apscheduler.jobstores.elasticsearch')
+    store = elasticsearch.ElasticsearchJobStore(url="http://localhost:9200")
+    store.start(None, 'elasticsearch')
+    yield store
+    store.remove_all_jobs()
+    store.shutdown()
+
 
 @pytest.fixture(params=['memjobstore', 'sqlalchemyjobstore', 'mongodbjobstore', 'redisjobstore',
                         'rethinkdbjobstore', 'zookeeperjobstore'],
