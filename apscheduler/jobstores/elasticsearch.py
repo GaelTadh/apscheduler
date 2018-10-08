@@ -217,3 +217,7 @@ class ElasticsearchJobStore(BaseJobStore):
         """Removes all jobs from this store."""
         for job in self.get_all_jobs():
             remove_job(job.id)
+
+    def __repr__(self):
+        self._logger.exception('<%s (client=%s)>' % (self.__class__.__name__, self.client))
+        return '<%s (client=%s)>' % (self.__class__.__name__, self.client)

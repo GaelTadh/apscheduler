@@ -85,7 +85,7 @@ def zookeeperjobstore():
 @pytest.yield_fixture
 def elasticsearchjobstore():
     elasticsearch = pytest.importorskip('apscheduler.jobstores.elasticsearch')
-    store = elasticsearch.ElasticsearchJobStore(url="http://localhost:9200")
+    store = elasticsearch.ElasticsearchJobStore(url='http://localhost:9200')
     store.start(None, 'elasticsearch')
     yield store
     store.remove_all_jobs()
@@ -93,15 +93,15 @@ def elasticsearchjobstore():
 
 
 @pytest.fixture(params=['memjobstore', 'sqlalchemyjobstore', 'mongodbjobstore', 'redisjobstore',
-                        'rethinkdbjobstore', 'zookeeperjobstore'],
-                ids=['memory', 'sqlalchemy', 'mongodb', 'redis', 'rethinkdb', 'zookeeper'])
+                        'rethinkdbjobstore', 'zookeeperjobstore', 'elasticsearchjobstore'],
+                ids=['memory', 'sqlalchemy', 'mongodb', 'redis', 'rethinkdb', 'zookeeper', 'elasticsearch'])
 def jobstore(request):
     return request.getfixturevalue(request.param)
 
 
 @pytest.fixture(params=['sqlalchemyjobstore', 'mongodbjobstore', 'redisjobstore',
-                        'rethinkdbjobstore', 'zookeeperjobstore'],
-                ids=['sqlalchemy', 'mongodb', 'redis', 'rethinkdb', 'zookeeper'])
+                        'rethinkdbjobstore', 'zookeeperjobstore', 'elasticsearchjobstore'],
+                ids=['sqlalchemy', 'mongodb', 'redis', 'rethinkdb', 'zookeeper', 'elasticsearch'])
 def persistent_jobstore(request):
     return request.getfixturevalue(request.param)
 
@@ -313,6 +313,11 @@ def test_repr_redisjobstore(redisjobstore):
 def test_repr_zookeeperjobstore(zookeeperjobstore):
     class_sig = "<ZooKeeperJobStore (client=<kazoo.client.KazooClient"
     assert repr(zookeeperjobstore).startswith(class_sig)
+
+
+def test_repr_elasticsearchjobstore(elasticsearchjobstore):
+    class_sig = "<ElasticsearchJobStore (client=<Elasticsearch"
+    assert repr(elasticsearchjobstore).startswith(class_sig)
 
 
 def test_memstore_close(memjobstore, create_add_job):
