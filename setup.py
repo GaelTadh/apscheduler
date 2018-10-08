@@ -28,7 +28,8 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
     ],
     keywords='scheduling cron',
     license='MIT',
@@ -54,12 +55,13 @@ setup(
         'twisted': ['twisted'],
         'zookeeper': ['kazoo'],
         'testing': [
-            'pytest',
+            'pytest < 3.7',
             'pytest-cov',
             'pytest-tornado5'
         ],
         'testing:python_version == "2.7"': ['mock'],
-        'testing:python_version != "2.7"': ['pytest_asyncio < 0.6.0']
+        'testing:python_version == "3.4"': ['pytest_asyncio < 0.6'],
+        'testing:python_version >= "3.5"': ['pytest_asyncio']
     },
     zip_safe=False,
     entry_points={

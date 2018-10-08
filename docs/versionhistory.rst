@@ -4,6 +4,25 @@ Version history
 To find out how to migrate your application from a previous version of
 APScheduler, see the :doc:`migration section <migration>`.
 
+3.5.3
+-----
+
+* Fixed regression introduced in 3.5.2: Class methods were mistaken for instance methods and thus
+  were broken during serialization
+* Fixed callable name detection for methods in old style classes
+
+
+3.5.2
+-----
+
+* Fixed scheduling of bound methods on persistent job stores (the workaround of scheduling
+  ``YourClass.methodname`` along with an explicit ``self`` argument is no longer necessary as this
+  is now done automatically for you)
+* Added the FAQ section to the docs
+* Made ``BaseScheduler.start()`` raise a ``RuntimeError`` if running under uWSGI with threads
+  disabled
+
+
 3.5.1
 -----
 
